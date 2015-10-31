@@ -7,7 +7,7 @@ namespace XamarinOffice365
     {
         public App()
         {
-            var navigationPage = new NavigationPage(new StartupPage()) { BarTextColor = Color.White };
+            NavigationPage navigationPage = new NavigationPage(new StartupPage()) { BarTextColor = Color.White };
             MainPage = navigationPage;
         }
 

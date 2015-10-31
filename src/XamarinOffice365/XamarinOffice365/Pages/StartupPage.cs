@@ -1,5 +1,5 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
+using XamarinOffice365.CustomRenderers;
 
 namespace XamarinOffice365.Pages
 {
@@ -9,8 +9,7 @@ namespace XamarinOffice365.Pages
         {
             NavigationPage.SetHasNavigationBar(this, false);
 
-
-            var grid = new Grid()
+            Grid grid = new Grid()
             {
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
@@ -32,6 +31,35 @@ namespace XamarinOffice365.Pages
             mask.SetValue(Grid.RowSpanProperty, 1);
             mask.SetValue(Grid.ColumnSpanProperty, 1);
             grid.Children.Add(mask);
+
+            ScrollView scrollView = new ScrollView
+            {   
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                Orientation = ScrollOrientation.Vertical
+            };
+
+            StackLayout loginLayout = new StackLayout
+            {
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center,
+                Spacing = 10
+            };
+
+            Label loginLabel = new Label { Text = "Login to Xamarin Office 365 Demo", TextColor = Color.White, FontSize = 24 };
+            loginLayout.Children.Add(new StackLayout { Children = { loginLabel }, Padding = new Thickness(0,0,0,30) });
+
+            TransparentEntry usernameEntry = new TransparentEntry { Placeholder = "Username" };
+            loginLayout.Children.Add(usernameEntry);
+
+            TransparentEntry passwordEntry = new TransparentEntry { Placeholder = "Password", IsPassword = true };
+            loginLayout.Children.Add(passwordEntry);
+
+            Button loginButton = new Button { Text = "Log In", FontSize = 18, TextColor = Color.White, BackgroundColor = Color.FromRgb(45, 180, 40), BorderColor = Color.White, BorderRadius = 5, BorderWidth = 1 };
+            loginLayout.Children.Add(new StackLayout { Children = { loginButton }, Padding = new Thickness(0,30,0,0) });
+
+            scrollView.Content = loginLayout;
+            grid.Children.Add(scrollView);
 
             Content = grid;
         }
