@@ -61,6 +61,9 @@ namespace XamarinOffice365.Pages
             scrollView.Content = loginLayout;
             grid.Children.Add(scrollView);
 
+            Label backgroundAttributionLabel = new Label { Text = "Macro Background Print 9 by Jason Weymouth Photography", TextColor = Color.White, FontSize = 12 };
+            grid.Children.Add(new StackLayout { Children = { backgroundAttributionLabel }, HorizontalOptions = LayoutOptions.Start, VerticalOptions = LayoutOptions.End, Padding = new Thickness(10,0,0,6) });
+
             Content = grid;
         }
     }
