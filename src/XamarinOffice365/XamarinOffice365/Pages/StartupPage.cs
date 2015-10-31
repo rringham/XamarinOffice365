@@ -1,5 +1,6 @@
 ﻿using Xamarin.Forms;
 using XamarinOffice365.CustomRenderers;
+using XamarinOffice365.Interfaces;
 
 namespace XamarinOffice365.Pages
 {
@@ -49,14 +50,9 @@ namespace XamarinOffice365.Pages
             Label loginLabel = new Label { Text = "Login to Xamarin Office 365 Demo", TextColor = Color.White, FontSize = 24 };
             loginLayout.Children.Add(new StackLayout { Children = { loginLabel }, Padding = new Thickness(0,0,0,30) });
 
-            TransparentEntry usernameEntry = new TransparentEntry { Placeholder = "Username" };
-            loginLayout.Children.Add(usernameEntry);
-
-            TransparentEntry passwordEntry = new TransparentEntry { Placeholder = "Password", IsPassword = true };
-            loginLayout.Children.Add(passwordEntry);
-
             Button loginButton = new Button { Text = "Log In", FontSize = 18, TextColor = Color.White, BackgroundColor = Color.FromRgb(45, 180, 40), BorderColor = Color.White, BorderRadius = 5, BorderWidth = 1 };
-            loginLayout.Children.Add(new StackLayout { Children = { loginButton }, Padding = new Thickness(0,30,0,0) });
+            loginButton.Clicked += LoginButton_Clicked;
+            loginLayout.Children.Add(loginButton);
 
             scrollView.Content = loginLayout;
             grid.Children.Add(scrollView);
@@ -65,6 +61,18 @@ namespace XamarinOffice365.Pages
             grid.Children.Add(new StackLayout { Children = { backgroundAttributionLabel }, HorizontalOptions = LayoutOptions.Start, VerticalOptions = LayoutOptions.End, Padding = new Thickness(10,0,0,6) });
 
             Content = grid;
+        }
+
+        private async void LoginButton_Clicked (object sender, System.EventArgs e)
+        {
+            const string clientId = "";
+            const string authority = "https://login.windows.net/common";
+            const string returnUri = "http://localhost/connect";
+            const string graphResourceUri = "https://graph.windows.net";
+
+            var auth = DependencyService.Get<IAzureActiveDirectoryAuthenticator>();
+            var token = await auth.Authenticate(authority, graphResourceUri, clientId, returnUri);
+            await DisplayAlert("Token", token, "Ok", "Cancel");
         }
     }
 }
