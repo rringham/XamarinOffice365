@@ -1,6 +1,5 @@
-﻿using System;
-
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
+using XamarinOffice365.Pages;
 
 namespace XamarinOffice365
 {
@@ -8,22 +7,8 @@ namespace XamarinOffice365
     {
         public App()
         {
-            // The root page of your application
-            MainPage = new ContentPage
-            {
-                Content = new StackLayout
-                {
-                    VerticalOptions = LayoutOptions.Center,
-                    Children =
-                    {
-                        new Label
-                        {
-                            XAlign = TextAlignment.Center,
-                            Text = "Welcome to Xamarin Forms!"
-                        }
-                    }
-                }
-            };
+            var navigationPage = new NavigationPage(new StartupPage()) { BarTextColor = Color.White };
+            MainPage = navigationPage;
         }
 
         protected override void OnStart()
@@ -42,4 +27,3 @@ namespace XamarinOffice365
         }
     }
 }
-
