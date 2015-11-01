@@ -1,11 +1,14 @@
-﻿using Xamarin.Forms;
-using XamarinOffice365.CustomRenderers;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 using XamarinOffice365.Interfaces;
 
 namespace XamarinOffice365.Pages
 {
     public class StartupPage : ContentPage
     {
+        private string _adAccessToken;
+        
         public StartupPage()
         {
             NavigationPage.SetHasNavigationBar(this, false);
@@ -65,14 +68,21 @@ namespace XamarinOffice365.Pages
 
         private async void LoginButton_Clicked (object sender, System.EventArgs e)
         {
-            const string clientId = "";
-            const string authority = "https://login.windows.net/common";
-            const string returnUri = "http://localhost/connect";
-            const string graphResourceUri = "https://graph.windows.net";
+            const string ClientId = "YOUR-CLIENT-ID-HERE";
+            const string Authority = "https://login.windows.net/common";
+            const string ReturnUri = "http://localhost/connect";
+            const string GraphResourceUri = "https://graph.microsoft.com";
 
             var auth = DependencyService.Get<IAzureActiveDirectoryAuthenticator>();
-            var token = await auth.Authenticate(authority, graphResourceUri, clientId, returnUri);
-            await DisplayAlert("Token", token, "Ok", "Cancel");
+            _adAccessToken = await auth.Authenticate(Authority, GraphResourceUri, ClientId, ReturnUri);
+
+            var exchangeService = DependencyService.Get<IOffice365ExchangeService>();
+            var messages = exchangeService.GetMessages(_adAccessToken);
+        }
+
+        private Task<string> GetAccessToken()
+        {
+            return Task.FromResult(_adAccessToken);
         }
     }
 }
