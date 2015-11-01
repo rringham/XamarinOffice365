@@ -19,5 +19,44 @@ namespace XamarinOffice365.Interfaces.Responses.Messages
 
         [JsonProperty(PropertyName = "Subject")]
         public string Subject { get; set; }
+
+        [JsonProperty(PropertyName = "Body")]
+        public MessageBody Body { get; set; }
+
+        [JsonProperty(PropertyName = "Sender")]
+        public Sender Sender { get; set; }
+
+        [JsonProperty(PropertyName = "From")]
+        public From From { get; set; }
+    }
+
+    public class MessageBody
+    {
+        [JsonProperty(PropertyName = "ContentType")]
+        public string ContentType { get; set; }
+
+        [JsonProperty(PropertyName = "Content")]
+        public string Content { get; set; }
+    }
+
+    public class Sender
+    {
+        [JsonProperty(PropertyName = "EmailAddress")]
+        public EmailAddress EmailAddress { get; set; }
+    }
+
+    public class From
+    {
+        [JsonProperty(PropertyName = "EmailAddress")]
+        public EmailAddress EmailAddress { get; set; }
+    }
+
+    public class EmailAddress
+    {
+        [JsonProperty(PropertyName = "Address")]
+        public string Address { get; set; }
+
+        [JsonProperty(PropertyName = "Name")]
+        public string Name { get; set; }
     }
 }

@@ -78,6 +78,7 @@ namespace XamarinOffice365.Pages
 
             var exchangeService = DependencyService.Get<IOffice365ExchangeService>();
             var messages = exchangeService.GetMessages(_adAccessToken);
+            var calendarEvents = exchangeService.GetCalendarEvents(_adAccessToken);
         }
 
         private Task<string> GetAccessToken()
