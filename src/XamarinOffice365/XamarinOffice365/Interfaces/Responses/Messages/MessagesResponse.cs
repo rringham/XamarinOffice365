@@ -28,6 +28,17 @@ namespace XamarinOffice365.Interfaces.Responses.Messages
 
         [JsonProperty(PropertyName = "From")]
         public From From { get; set; }
+
+        [JsonProperty(PropertyName = "IsRead")]
+        public bool IsRead { get; set; }
+
+        public string UnreadLabel
+        {
+            get
+            {
+                return IsRead ? "" : "•";
+            }
+        }
     }
 
     public class MessageBody
@@ -49,6 +60,14 @@ namespace XamarinOffice365.Interfaces.Responses.Messages
     {
         [JsonProperty(PropertyName = "EmailAddress")]
         public EmailAddress EmailAddress { get; set; }
+
+        public string FromDescription
+        {
+            get
+            {
+                return string.Format("{0} <{1}>", EmailAddress?.Name, EmailAddress?.Address);
+            }
+        }
     }
 
     public class EmailAddress

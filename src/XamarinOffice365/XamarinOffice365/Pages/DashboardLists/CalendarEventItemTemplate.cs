@@ -1,5 +1,4 @@
-﻿using System;
-using XamarinOffice365.CustomRenderers;
+﻿using XamarinOffice365.CustomRenderers;
 using Xamarin.Forms;
 
 namespace XamarinOffice365.Pages.DashboardLists

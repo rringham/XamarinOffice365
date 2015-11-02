@@ -20,6 +20,7 @@ namespace XamarinOffice365.Pages
         private Grid _loadingGrid;
         private Grid _contentGrid;
         private NoHighlightListView _calendarEventListView;
+        private NoHighlightListView _messageListView;
         
         public Office365DashboardPage(string adAccessToken)
         {
@@ -89,17 +90,17 @@ namespace XamarinOffice365.Pages
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 RowDefinitions = {
                     new RowDefinition { Height = Device.OnPlatform(32,10,0) },
-                    new RowDefinition { Height = 40 },
-                    new RowDefinition { Height = 200 },
-                    new RowDefinition { Height = 40 },
+                    new RowDefinition { Height = 50 },
+                    new RowDefinition { Height = Device.OnPlatform(200,220,0) },
+                    new RowDefinition { Height = 50 },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
                     new RowDefinition { Height = 40 },
                 },
                 IsVisible = false
             };
 
-            _contentGrid.Children.Add(new StackLayout { Padding = new Thickness(20, 0, 0, 0), Children = { new Label { Text = "Upcoming Events", TextColor = Color.White, FontSize = 24, VerticalOptions = LayoutOptions.Start } } }, 0, 1);
-            _contentGrid.Children.Add(new StackLayout { Padding = new Thickness(20, 0, 0, 0), Children = { new Label { Text = "Recent Messages", TextColor = Color.White, FontSize = 24, VerticalOptions = LayoutOptions.Start } } }, 0, 3);
+            _contentGrid.Children.Add(new StackLayout { Padding = new Thickness(20, 0, 0, 0), Children = { new Label { Text = "Upcoming Events", TextColor = Color.White, FontSize = 24, VerticalOptions = LayoutOptions.CenterAndExpand } } }, 0, 1);
+            _contentGrid.Children.Add(new StackLayout { Padding = new Thickness(20, 0, 0, 0), Children = { new Label { Text = "Recent Messages", TextColor = Color.White, FontSize = 24, VerticalOptions = LayoutOptions.CenterAndExpand } } }, 0, 3);
 
             _calendarEventListView = new NoHighlightListView { HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill, BackgroundColor = Color.Transparent };
             var calendarEventItemTemplate = new DataTemplate(() => new CalendarEventItemTemplate());
@@ -115,6 +116,21 @@ namespace XamarinOffice365.Pages
                 ((ListView)sender).SelectedItem = null;
             };
             _contentGrid.Children.Add(_calendarEventListView, 0, 2);
+
+            _messageListView = new NoHighlightListView { HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill, BackgroundColor = Color.Transparent };
+            var messageItemTemplate = new DataTemplate(() => new MessageItemTemplate());
+            messageItemTemplate.CreateContent();
+            _messageListView.SeparatorVisibility = SeparatorVisibility.None;
+            _messageListView.ItemsSource = _messages;
+            _messageListView.ItemTemplate = messageItemTemplate;
+            _messageListView.HasUnevenRows = true;
+            _messageListView.ItemTapped += (sender, e) => {                
+                if (e.Item == null) {
+                    return;
+                }
+                ((ListView)sender).SelectedItem = null;
+            };
+            _contentGrid.Children.Add(_messageListView, 0, 4);
 
             Button refreshButton = new Button { Text = "Refresh", TextColor = Color.White, FontSize = 18, VerticalOptions = LayoutOptions.CenterAndExpand, HorizontalOptions = LayoutOptions.EndAndExpand, BackgroundColor = Color.Transparent };
             refreshButton.Clicked += RefreshButton_Clicked;
@@ -142,10 +158,8 @@ namespace XamarinOffice365.Pages
                     _calendarEvents = new ObservableCollection<CalendarEvent>(calendarEvents);
                     _calendarEventListView.ItemsSource = _calendarEvents;
 
-                    _messages.Clear();
-                    foreach (var message in messages) {                        
-                        _messages.Add(message);
-                    }
+                    _messages = new ObservableCollection<Message>(messages);
+                    _messageListView.ItemsSource = _messages;
 
                     _loadingGrid.IsVisible = false;
                     _contentGrid.IsVisible = true;
