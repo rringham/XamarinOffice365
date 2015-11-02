@@ -127,6 +127,7 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="CustomRenderers\IosTransparentEntryRenderer.cs" />
     <Compile Include="Authentication\IosAzureActiveDirectoryAuthenticator.cs" />
+    <Compile Include="CustomRenderers\IosNoHighlightListViewCellRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="ITunesArtwork" />

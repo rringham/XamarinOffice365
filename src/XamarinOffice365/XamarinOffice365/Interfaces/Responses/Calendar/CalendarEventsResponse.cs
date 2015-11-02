@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Globalization;
 
 namespace XamarinOffice365.Interfaces.Responses.Calendar
 {
@@ -29,6 +30,16 @@ namespace XamarinOffice365.Interfaces.Responses.Calendar
 
         [JsonProperty(PropertyName = "Location")]
         public CalendarEventLocation Location { get; set; }
+
+        public string ShortTimeSpan
+        {
+            get { return string.Format("{0} - {1}", Start.ToLocalTime().ToString("t"), End.ToLocalTime().ToString("t")); }
+        }
+
+        public string ShortDate
+        {
+            get { return Start.ToLocalTime().ToString("D"); }
+        }
     }
 
     public class CalendarEventLocation

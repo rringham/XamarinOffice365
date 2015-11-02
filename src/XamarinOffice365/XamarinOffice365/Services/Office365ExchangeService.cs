@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using Newtonsoft.Json;
 using Xamarin.Forms;
@@ -63,7 +64,10 @@ namespace XamarinOffice365.Services
                         {
                             var json = response.Content.ReadAsStringAsync().Result;
                             var calendarEventsResponse = JsonConvert.DeserializeObject<CalendarEventsResponse>(json);
-                            return calendarEventsResponse.Events;
+                            var sortedEvents = (from calendarEvent in calendarEventsResponse.Events
+                                orderby calendarEvent.Start ascending
+                                select calendarEvent).ToList();
+                            return sortedEvents;
                         }
                     }
                 }

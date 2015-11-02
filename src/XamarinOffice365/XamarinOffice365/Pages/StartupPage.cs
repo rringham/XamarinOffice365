@@ -1,24 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using XamarinOffice365.Interfaces;
 
 namespace XamarinOffice365.Pages
 {
     public class StartupPage : ContentPage
-    {
-        private string _adAccessToken;
-        
+    {        
         public StartupPage()
         {
             NavigationPage.SetHasNavigationBar(this, false);
+            Content = SetupContentView();
+        }
 
-            Grid grid = new Grid()
-            {
+        private View SetupContentView()
+        {
+            Grid grid = new Grid {
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                RowDefinitions =
-                {
+                RowDefinitions = {
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
                 },
             };
@@ -37,18 +35,18 @@ namespace XamarinOffice365.Pages
             grid.Children.Add(mask);
 
             ScrollView scrollView = new ScrollView
-            {   
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                Orientation = ScrollOrientation.Vertical
-            };
+                {   
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    Orientation = ScrollOrientation.Vertical
+                };
 
             StackLayout loginLayout = new StackLayout
-            {
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Center,
-                Spacing = 10
-            };
+                {
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Center,
+                    Spacing = 10
+                };
 
             Label loginLabel = new Label { Text = "Login to Xamarin Office 365 Demo", TextColor = Color.White, FontSize = 24 };
             loginLayout.Children.Add(new StackLayout { Children = { loginLabel }, Padding = new Thickness(0,0,0,30) });
@@ -63,27 +61,22 @@ namespace XamarinOffice365.Pages
             Label backgroundAttributionLabel = new Label { Text = "Macro Background Print 9 by Jason Weymouth Photography", TextColor = Color.White, FontSize = 12 };
             grid.Children.Add(new StackLayout { Children = { backgroundAttributionLabel }, HorizontalOptions = LayoutOptions.Start, VerticalOptions = LayoutOptions.End, Padding = new Thickness(10,0,0,6) });
 
-            Content = grid;
+            return grid;
         }
 
         private async void LoginButton_Clicked (object sender, System.EventArgs e)
         {
-            const string ClientId = "YOUR-CLIENT-ID-HERE";
+            const string ClientId = "YOUR-ID-HERE";
             const string Authority = "https://login.windows.net/common";
             const string ReturnUri = "http://localhost/connect";
             const string GraphResourceUri = "https://graph.microsoft.com";
 
             var auth = DependencyService.Get<IAzureActiveDirectoryAuthenticator>();
-            _adAccessToken = await auth.Authenticate(Authority, GraphResourceUri, ClientId, ReturnUri);
+            string adAccessToken = await auth.Authenticate(Authority, GraphResourceUri, ClientId, ReturnUri);
 
-            var exchangeService = DependencyService.Get<IOffice365ExchangeService>();
-            var messages = exchangeService.GetMessages(_adAccessToken);
-            var calendarEvents = exchangeService.GetCalendarEvents(_adAccessToken);
-        }
-
-        private Task<string> GetAccessToken()
-        {
-            return Task.FromResult(_adAccessToken);
+            if (!string.IsNullOrEmpty(adAccessToken)) {
+                Navigation.PushAsync(new Office365DashboardPage(adAccessToken));
+            }
         }
     }
 }
