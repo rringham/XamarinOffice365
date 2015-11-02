@@ -10,7 +10,6 @@ namespace XamarinOffice365.Pages.DashboardLists
         {
             Grid cellGrid = new Grid
                 {
-                    VerticalOptions = LayoutOptions.FillAndExpand,
                     BackgroundColor = Color.FromRgba(255, 255, 255, 30),
                     RowSpacing = 0,
                     ColumnSpacing = 0,
