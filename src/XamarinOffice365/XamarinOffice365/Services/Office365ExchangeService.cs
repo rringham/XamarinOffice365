@@ -42,7 +42,7 @@ namespace XamarinOffice365.Services
                 }
             }
 
-            throw new Exception("Could not get messages");
+            return new List<Message>();
         }
 
         public List<CalendarEvent> GetCalendarEvents(string accessToken)
@@ -73,7 +73,7 @@ namespace XamarinOffice365.Services
                 }
             }
 
-            throw new Exception("Could not get calendar events");
+            return new List<CalendarEvent>();
         }
     }
 }
