@@ -69,7 +69,7 @@ namespace XamarinOffice365.Pages
             const string ClientId = "YOUR-ID-HERE";
             const string Authority = "https://login.windows.net/common";
             const string ReturnUri = "http://localhost/connect";
-            const string GraphResourceUri = "https://graph.microsoft.com";
+            const string GraphResourceUri = "https://outlook.office.com";
 
             var auth = DependencyService.Get<IAzureActiveDirectoryAuthenticator>();
             string adAccessToken = await auth.Authenticate(Authority, GraphResourceUri, ClientId, ReturnUri);

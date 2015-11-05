@@ -14,8 +14,8 @@ namespace XamarinOffice365.Services
 {
     public class Office365ExchangeService : IOffice365ExchangeService
     {
-        private const string GetMessagesUrl = "https://graph.microsoft.com/beta/me/messages";
-        private const string GetCalendarEventsUrl = "https://graph.microsoft.com/beta/me/calendar/events";
+        private const string GetMessagesUrl = "https://outlook.office.com/api/v1.0/me/messages";
+        private const string GetCalendarEventsUrl = "https://outlook.office.com/api/v1.0/me/events";
         
         public List<Message> GetMessages(string accessToken)
         {
